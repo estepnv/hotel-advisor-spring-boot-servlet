@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:17  # Specify the PostgreSQL image and version
+    restart: always
+    ports:
+      - "5432:5432" # Map host port 5432 to container port 5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: hotel_advisor_dev
+    volumes:
+      - db_data:/var/lib/postgresql/data # Persist data even if container is removed
+
+volumes:
+  db_data:

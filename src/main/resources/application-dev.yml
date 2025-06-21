@@ -1,0 +1,32 @@
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+#  structured:
+#    format:
+#      console: ecs
+
+secretKeyBase: 063617af429d9dc3d3253ac608efd2785492b4304cb8ac72eac3e82bd220b9b3f4c34c3e769bc3f590dc7528bc372ccde1fb141bac44e399bd5f87d2b4033ba7
+
+jwt:
+  issuer: hotel_advisor
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    password: postgres
+    username: postgres
+    url: jdbc:postgresql://localhost/hotel_advisor_dev
+  jpa:
+    hibernate:
+      use-new-id-generator-mappings: true
+      ddl-auto: update
+    show-sql: true
+  application:
+    name: hotel_advisor
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://idp.example.com/issuer
