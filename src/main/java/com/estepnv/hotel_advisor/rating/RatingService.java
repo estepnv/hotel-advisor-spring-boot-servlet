@@ -52,13 +52,19 @@ public class RatingService {
             record.setHotelId(hotel.getId());
         }
 
-        var averageRating = ratingRepository.getAverageHotelRating(model.getHotelId());
-        var updateHotelModel = new UpdateHotelModel();
-        updateHotelModel.setRatingCache(Optional.of(averageRating));
-        hotelService.updateHotel(model.getHotelId(), updateHotelModel);
-
         record.setValue(model.getRating());
         ratingRepository.save(record);
+
+        reloadRatingCache(record.getHotelId());
+
         return ratingRepository.findById(record.getId()).orElseThrow();
     }
+
+    private void reloadRatingCache(UUID hotelId) {
+        var averageRating = ratingRepository.getAverageHotelRating(hotelId);
+        var updateHotelModel = new UpdateHotelModel();
+        updateHotelModel.setRatingCache(Optional.of(averageRating));
+        hotelService.updateHotel(hotelId, updateHotelModel);
+    }
+
 }
