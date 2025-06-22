@@ -1,6 +1,6 @@
 package com.estepnv.hotel_advisor.users;
 
-import com.estepnv.hotel_advisor.iam.RegisterRequest;
+import com.estepnv.hotel_advisor.iam.CreateUserModel;
 import com.estepnv.hotel_advisor.exceptions.RecordNotFoundException;
 import com.estepnv.hotel_advisor.iam.User;
 import com.estepnv.hotel_advisor.iam.UserRepository;
@@ -41,7 +41,7 @@ public class UserController {
 
     @PermitAll
     @PostMapping("/api/users")
-    public ResponseEntity<?> createUser(@Valid @RequestBody RegisterRequest request) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserModel request) {
         var user = service.registerUser(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(modelAssembler.toModel(user));
     }

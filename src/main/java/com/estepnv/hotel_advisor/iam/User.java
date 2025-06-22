@@ -1,35 +1,26 @@
 package com.estepnv.hotel_advisor.iam;
 
+import com.estepnv.hotel_advisor.jpa_common.ApplicationEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-@EntityListeners(AuditingEntityListener.class)
-public class User implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-
+public class User extends ApplicationEntity implements UserDetails {
     @NotNull
     private String email;
 
-    @Getter
     @NotNull
     private String password;
 
@@ -82,15 +73,4 @@ public class User implements UserDetails {
     public boolean isCredentialsNonExpired() {
         return true;
     }
-
-    @CreatedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="created_at", nullable = false, updatable = false)
-    Date createdAt;
-
-    @LastModifiedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name= "updated_at")
-    Date updatedAt;
-
 }

@@ -1,4 +1,4 @@
-package com.estepnv.hotel_advisor.web_utils;
+package com.estepnv.hotel_advisor.web_common;
 
 import com.estepnv.hotel_advisor.exceptions.ApplicationException;
 import org.springframework.http.ResponseEntity;
