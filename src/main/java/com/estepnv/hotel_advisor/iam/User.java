@@ -15,13 +15,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
 
-@NamedEntityGraph(
-        name = "user-roles-graph",
-        attributeNodes = {
-              @NamedAttributeNode("roles")
-        }
-)
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -43,6 +36,8 @@ public class User implements UserDetails {
     @NotNull
     boolean enabled;
 
+    @OneToMany(mappedBy = "user")
+    private Set<UserRole> userRoles;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",

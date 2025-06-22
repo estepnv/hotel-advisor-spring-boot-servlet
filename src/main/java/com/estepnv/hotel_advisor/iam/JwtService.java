@@ -36,10 +36,15 @@ public class JwtService {
 
         var now = Instant.now();
 
+        String scpClaim = user.getRoles().stream()
+                .map(r -> r.getName())
+                .reduce("", (acc, roleName) -> "%s %s".formatted(acc, roleName));
+
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("hotel_advisor")
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(36000L))
+                .claim("authorities", scpClaim)
                 .subject(user.getId().toString())
                 .build();
 

@@ -2,20 +2,27 @@ package com.estepnv.hotel_advisor.iam;
 
 import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-class Whoami {
-    public String id;
+import java.util.List;
+import java.util.UUID;
 
-    Whoami(){
-        this.id = "nobody";
+class Whoami {
+    public UUID id;
+    public String email;
+    public List<String> authorities;
+
+    public Whoami(User user) {
+        this.id = user.getId();
+        this.email = user.getEmail();
+        this.authorities = user.getAuthorities().stream().map(a -> a.getAuthority()).toList();
     }
 }
 
@@ -26,6 +33,9 @@ class TokenModel {
 
 @RestController
 public class AuthController {
+    @Autowired
+    UserDetailsService userDetailsService;
+
     private JwtService service;
     AuthController(JwtService service) {
         this.service = service;
@@ -41,11 +51,8 @@ public class AuthController {
     @GetMapping("/api/whoami")
     EntityModel<Whoami> whoami() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
-        var details = (WebAuthenticationDetails)authentication.getDetails();
+        var user = userDetailsService.loadUserByUsername(authentication.getName());
 
-        var model = new Whoami();
-        model.id = details.toString();
-
-        return EntityModel.of(model);
+        return EntityModel.of(new Whoami((User)user));
     }
 }
