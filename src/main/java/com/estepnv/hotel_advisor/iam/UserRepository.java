@@ -1,4 +1,4 @@
-package com.estepnv.hotel_advisor.users;
+package com.estepnv.hotel_advisor.iam;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

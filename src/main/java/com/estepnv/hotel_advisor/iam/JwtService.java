@@ -1,8 +1,6 @@
 package com.estepnv.hotel_advisor.iam;
 
 import com.estepnv.hotel_advisor.exceptions.RecordNotFoundException;
-import com.estepnv.hotel_advisor.users.User;
-import com.estepnv.hotel_advisor.users.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jose.jws.JwsAlgorithm;
 import org.springframework.security.oauth2.jwt.JwsHeader;
@@ -30,7 +28,7 @@ public class JwtService {
     }
 
     public String createToken(CreateTokenRequest request) throws RecordNotFoundException {
-        var user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new RecordNotFoundException(User.class, request.getEmail()));
+        var user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new RecordNotFoundException("User", request.getEmail()));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new UserPasswordDoesNotMatchException();

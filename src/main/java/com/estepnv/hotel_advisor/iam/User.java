@@ -1,7 +1,5 @@
-package com.estepnv.hotel_advisor.users;
+package com.estepnv.hotel_advisor.iam;
 
-import com.estepnv.hotel_advisor.iam.Role;
-import com.estepnv.hotel_advisor.iam.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -20,15 +18,7 @@ import java.util.*;
 @NamedEntityGraph(
         name = "user-roles-graph",
         attributeNodes = {
-              @NamedAttributeNode("userRoles")
-        },
-        subgraphs = {
-                @NamedSubgraph(
-                        name = "user-roles-subgraph",
-                        attributeNodes = {
-                                @NamedAttributeNode("role")
-                        }
-                )
+              @NamedAttributeNode("roles")
         }
 )
 
@@ -54,12 +44,18 @@ public class User implements UserDetails {
     boolean enabled;
 
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<UserRole> userRoles = new HashSet<>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
-    public Set<Role> getRoles() {
-        var list = userRoles.stream().map(userRole -> userRole.getRole()).toList();
-        return new HashSet<Role>(list);
+    public void addRole(Role role) {
+        this.roles.add(role);
+    }
+
+    public void removeRole(Role role) {
+        this.roles.remove(role);
     }
 
     @Override

@@ -1,8 +1,7 @@
 package com.estepnv.hotel_advisor.users;
 
+import com.estepnv.hotel_advisor.iam.User;
 import org.springframework.data.domain.Page;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.LinkRelation;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;

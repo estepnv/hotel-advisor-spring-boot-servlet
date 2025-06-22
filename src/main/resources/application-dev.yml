@@ -11,13 +11,16 @@ secretKeyBase: 063617af429d9dc3d3253ac608efd2785492b4304cb8ac72eac3e82bd220b9b3f
 
 jwt:
   issuer: hotel_advisor
-
 spring:
+  sql:
+    init:
+      mode: always
   datasource:
     driver-class-name: org.postgresql.Driver
     password: postgres
     username: postgres
     url: jdbc:postgresql://localhost/hotel_advisor_dev
+
   jpa:
     hibernate:
       use-new-id-generator-mappings: true

@@ -2,6 +2,8 @@ package com.estepnv.hotel_advisor.users;
 
 import com.estepnv.hotel_advisor.iam.RegisterRequest;
 import com.estepnv.hotel_advisor.exceptions.RecordNotFoundException;
+import com.estepnv.hotel_advisor.iam.User;
+import com.estepnv.hotel_advisor.iam.UserRepository;
 import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +33,7 @@ public class UserController {
 
     @GetMapping("/api/users/{id}")
     public ResponseEntity<?> show(@PathVariable UUID id) {
-        var user = repository.findById(id).orElseThrow(() -> new RecordNotFoundException(User.class, id.toString()));
+        var user = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("User", id.toString()));
 
         return ResponseEntity.ok(modelAssembler.toModel(user));
     }

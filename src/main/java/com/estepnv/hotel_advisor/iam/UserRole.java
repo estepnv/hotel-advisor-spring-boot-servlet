@@ -1,6 +1,5 @@
 package com.estepnv.hotel_advisor.iam;
 
-import com.estepnv.hotel_advisor.users.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

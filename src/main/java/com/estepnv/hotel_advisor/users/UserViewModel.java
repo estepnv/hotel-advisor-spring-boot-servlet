@@ -1,5 +1,6 @@
 package com.estepnv.hotel_advisor.users;
 
+import com.estepnv.hotel_advisor.iam.User;
 import lombok.Data;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
