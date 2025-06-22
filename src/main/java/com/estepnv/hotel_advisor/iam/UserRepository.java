@@ -1,5 +1,6 @@
 package com.estepnv.hotel_advisor.iam;
 
+import com.estepnv.hotel_advisor.exceptions.RecordNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -17,4 +18,5 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     @EntityGraph(attributePaths = {"roles", "userRoles.role"})
     Page<User> findAll(Pageable pageable);
+
 }

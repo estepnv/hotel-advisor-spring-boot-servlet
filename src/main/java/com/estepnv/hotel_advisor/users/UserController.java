@@ -10,10 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.UUID;
 
 
@@ -46,9 +47,32 @@ public class UserController {
     }
 
     @GetMapping("/api/users")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<PagedModel<?>> listUsers(Pageable pageable) {
         var users = repository.findAll(pageable);
         var model = pagedResourcesAssembler.toModel(users, modelAssembler);
         return ResponseEntity.ok(model);
+    }
+
+    @PutMapping("/api/users/{user_id}/add_role/{role_name}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<RepresentationModel<?>> addRoleToUser(
+            @PathVariable("user_id") UUID userId,
+            @PathVariable("role_name") String roleName) {
+
+        var user = service.addRoleToUser(userId, roleName);
+
+        return ResponseEntity.status(201).body(modelAssembler.toModel(user));
+    }
+
+    @DeleteMapping("/api/users/{user_id}/remove_role/{role_name}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<RepresentationModel<?>> removeRoleFromUser(
+            @PathVariable("user_id") UUID userId,
+            @PathVariable("role_name") String roleName) {
+
+        var user = service.removeRoleFromUser(userId, roleName);
+
+        return ResponseEntity.status(200).body(modelAssembler.toModel(user));
     }
 }
