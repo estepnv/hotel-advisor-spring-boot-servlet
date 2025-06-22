@@ -14,6 +14,7 @@ public class HotelViewModelAssembler implements RepresentationModelAssembler<Hot
         var model = new HotelViewModel(
                 entity.getId(),
                 entity.getName(),
+                entity.getRatingCache(),
                 entity.getCreatedAt().toInstant(),
                 entity.getUpdatedAt().toInstant()
         );

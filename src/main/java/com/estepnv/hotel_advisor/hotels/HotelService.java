@@ -16,6 +16,7 @@ public class HotelService {
     public Hotel createHotel(CreateHotelModel model) {
         var newRecord = new Hotel();
         newRecord.setName(model.getName());
+        newRecord.setRatingCache(0.0);
 
         return hotelRepository.save(newRecord);
     }
@@ -23,8 +24,8 @@ public class HotelService {
     public Hotel updateHotel(UUID id, UpdateHotelModel model) {
         var hotel = hotelRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Hotel", id.toString()));
 
-        if (model.getName().isPresent())
-            hotel.setName(model.getName().get());
+        model.getName().ifPresent(value -> hotel.setName(value));
+        model.getRatingCache().ifPresent(value -> hotel.setRatingCache(value));
 
         return hotelRepository.save(hotel);
     }

@@ -12,9 +12,13 @@ import java.util.UUID;
 @Entity
 @Data
 @NoArgsConstructor
+@Table(name="hotels")
 public class Hotel extends ApplicationEntity {
     @NotNull
     @NotBlank
     private String name;
+
+    @NotNull
+    private Double ratingCache;
 
 }

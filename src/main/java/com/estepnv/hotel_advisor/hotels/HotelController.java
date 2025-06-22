@@ -34,7 +34,6 @@ public class HotelController {
         return ResponseEntity.status(201).body(modelAssembler.toModel(hotel));
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/api/hotels")
     public ResponseEntity<PagedModel<?>> listHotels(Pageable pageable) {
         var hotels = hotelRepository.findAll(pageable);
@@ -43,7 +42,7 @@ public class HotelController {
     }
 
     @GetMapping("/api/hotels/{id}")
-    ResponseEntity<RepresentationModel<?>> show(@PathVariable UUID id){
+    public ResponseEntity<RepresentationModel<?>> show(@PathVariable UUID id){
         var hotel = hotelRepository.findById(id).orElseThrow(()-> new RecordNotFoundException("Hotel", id.toString()));
 
         return ResponseEntity.status(200).body(modelAssembler.toModel(hotel));
@@ -51,14 +50,14 @@ public class HotelController {
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PutMapping("/api/hotels/{id}")
-    ResponseEntity<RepresentationModel<?>> update(@PathVariable UUID id, @Valid @RequestBody UpdateHotelModel model) {
+    public ResponseEntity<RepresentationModel<?>> update(@PathVariable UUID id, @Valid @RequestBody UpdateHotelModel model) {
         var hotel = hotelService.updateHotel(id, model);
         return ResponseEntity.status(200).body(modelAssembler.toModel(hotel));
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/api/hotels/{id}")
-    ResponseEntity<RepresentationModel<?>> delete(@PathVariable UUID id) {
+    public ResponseEntity<RepresentationModel<?>> delete(@PathVariable UUID id) {
         hotelService.removeHotel(id);
         return ResponseEntity.noContent().build();
     }
